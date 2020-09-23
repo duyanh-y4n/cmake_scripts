@@ -4,6 +4,9 @@ list(APPEND MCU_LIST
     STM32F769xx
     )
 
+# path to Drivers folder that contain a CMakeLists
+set(DRIVERS_DIR ${PROJECT_SOURCE_DIR}/Drivers)
+
 #########################################################################
 # STM_HAL_INIT
 #########################################################################
@@ -28,7 +31,7 @@ function(STM_HAL_INIT STM_MCU)
         set(MCU_HAL_INIT_SRC ${STM_HAL_INIT_SRC} CACHE INTERNAL "")
 
         # HAL Drivers -> muss be included first
-        add_subdirectory(${PROJECT_SOURCE_DIR}/Drivers)
+        add_subdirectory(${DRIVERS_DIR})
         set(MCU_HAL_DRIVER STM32L4xx_HAL_Driver CACHE INTERNAL "")
         set(STM32L4xx_HAL_Driver TRUE CACHE INTERNAL "")
 
@@ -52,7 +55,7 @@ function(STM_HAL_INIT STM_MCU)
         set(MCU_HAL_INIT_SRC ${STM_HAL_INIT_SRC} CACHE INTERNAL "")
 
         # HAL Drivers -> muss be included first
-        add_subdirectory(${PROJECT_SOURCE_DIR}/Drivers)
+        add_subdirectory(${DRIVERS_DIR})
         set(MCU_HAL_DRIVER STM32F7xx_HAL_Driver CACHE INTERNAL "")
         set(STM32F7xx_HAL_Driver TRUE CACHE INTERNAL "")
     else()

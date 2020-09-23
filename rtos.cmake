@@ -1,3 +1,8 @@
+########################################################################
+# rtos scripts
+########################################################################
+
+# FreeRTOS
 include(LOGGER) #cmake logger
 add_subdirectory(${PROJECT_SOURCE_DIR}/Middlewares/Third_Party/FreeRTOS)
 list(APPEND FREERTOS_APP
@@ -5,3 +10,5 @@ list(APPEND FREERTOS_APP
     )
 set(RTOS freertos CACHE INTERNAL "")
 set(RTOS_APP_SRC ${FREERTOS_APP} CACHE INTERNAL "")
+
+# TODO: other supported rtos
