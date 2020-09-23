@@ -1,2 +1,3 @@
-add_subdirectory(STM32L4xx_HAL_Driver)
+#add_subdirectory(STM32L4xx_HAL_Driver)
+add_subdirectory(STM32F7xx_HAL_Driver)
 add_subdirectory(CMSIS)
