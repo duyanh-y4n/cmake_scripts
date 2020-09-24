@@ -49,11 +49,15 @@ MCU_HAL_INIT(${MCU})
 # third party middlewares
 ## FREERTOS
 include(rtos)
+
+## FatFs
+include(FATFS)
+
 ##############################################################################
 # TARGET
 ##############################################################################
 #set(TARGET_OUTPUT ${PROJECT_NAME})
-set(TARGET_OUTPUT target.elf)
+set(TARGET_OUTPUT target)
 
 
 ##############################################################################
@@ -80,3 +84,12 @@ target_sources(${TARGET_OUTPUT} PUBLIC
     )
 
 target_link_libraries(${TARGET_OUTPUT} ${DEBUG_TOOLS})
+
+target_link_libraries(${TARGET_OUTPUT} FATFS_MIDDLEWARE)
+#target_link_libraries(${TARGET_OUTPUT} FATFS_HARDWARE_IMPL)
+
+##############################################################################
+include(binutils-arm-none-aebi)
+print_section_sizes(${TARGET_OUTPUT})
+create_hex_output(${TARGET_OUTPUT})
+create_bin_output(${TARGET_OUTPUT})
