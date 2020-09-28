@@ -33,25 +33,14 @@ include(LOGGER) #cmake colour logger
 # set toolchain 
 include(toolchain-arm-none-aebi)
 
-include(DEBUG_TOOLS) # debug output
-
-
 ##############################################################################
 # app src and includes
-include(app)
+add_subdirectory(Core)
 
 ##############################################################################
 # setting MCU HAL
 include(MCU_Platform_init)
-MCU_HAL_INIT(${MCU})
-
-##############################################################################
-# third party middlewares
-## FREERTOS
-include(rtos)
-
-## FatFs
-include(FATFS)
+MCU_HAL_INIT()
 
 ##############################################################################
 # TARGET
@@ -64,7 +53,8 @@ set(TARGET_OUTPUT target)
 # Linking Project
 ##############################################################################
 add_executable(${TARGET_OUTPUT}
-    ${APP_SRC_FILES}
+    ${MAIN}
+    ${MCU_HAL_INIT_SRC}
     )
 
 target_compile_definitions(${TARGET_OUTPUT} PUBLIC ${COMPILE_DEFINITIONS})
@@ -73,20 +63,10 @@ target_include_directories(${TARGET_OUTPUT} PUBLIC
     ${APP_INC_PATH} # app includes
     )
 
-target_link_libraries(${TARGET_OUTPUT} ${MCU_HAL_DRIVER})
-target_sources(${TARGET_OUTPUT} PUBLIC
-    ${MCU_HAL_INIT_SRC}
-    )
-
-target_link_libraries(${TARGET_OUTPUT} ${RTOS})
-target_sources(${TARGET_OUTPUT} PUBLIC
-    ${RTOS_APP_SRC}
-    )
-
-target_link_libraries(${TARGET_OUTPUT} ${DEBUG_TOOLS})
-
-target_link_libraries(${TARGET_OUTPUT} FATFS_MIDDLEWARE)
-#target_link_libraries(${TARGET_OUTPUT} FATFS_HARDWARE_IMPL)
+add_subdirectory(Middlewares)
+target_link_libraries(${TARGET_OUTPUT} Middlewares)
+add_subdirectory(Drivers)
+target_link_libraries(${TARGET_OUTPUT} Drivers)
 
 ##############################################################################
 include(binutils-arm-none-aebi)

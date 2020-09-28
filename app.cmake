@@ -1,5 +1,3 @@
-include(LOGGER) #cmake logger
-
 #  this is for advance project structure of STM32CUBEMX -> Src and Inc are moved into Core/
 list(APPEND APP_SRC_LIST
     ${PROJECT_SOURCE_DIR}/Core/Src/main.c

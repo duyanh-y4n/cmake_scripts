@@ -1,7 +1,13 @@
+project(STM32F7xx_HAL_Driver)
+cmake_minimum_required(VERSION 3.15.3)
+
+# Env variable
 set(STM32F7xx_HAL_PATH ${CMAKE_CURRENT_SOURCE_DIR})
 set(STM32F7xx_HAL_INC ${CMAKE_CURRENT_SOURCE_DIR}/Inc)
 set(STM32F7xx_HAL_SRC ${CMAKE_CURRENT_SOURCE_DIR}/Src)
-add_library(STM32F7xx_HAL_Driver 
+
+# Source
+add_library(STM32F7xx_HAL_Driver OBJECT EXCLUDE_FROM_ALL
     #header
     ${STM32F7xx_HAL_INC}/stm32_assert_template.h
     ${STM32F7xx_HAL_INC}/stm32f7xx_hal.h
@@ -196,9 +202,17 @@ add_library(STM32F7xx_HAL_Driver
     ${STM32F7xx_HAL_SRC}/stm32f7xx_ll_utils.c
     )
 
+if(NOT DEFINED STM32F7xx_HAL_CONF_PATH)
+    message(FATAL_ERROR "STM32F7xx_HAL_CONF_PATH not set!")
+endif(NOT DEFINED STM32F7xx_HAL_CONF_PATH)
 target_include_directories(STM32F7xx_HAL_Driver PUBLIC
     ${STM32F7xx_HAL_INC}
-    ${PROJECT_SOURCE_DIR}/Core/Inc # stm32f7xx_hal_conf.h location
+    ${STM32F7xx_HAL_CONF_PATH} # stm32f7xx_hal_conf.h location
     )
 
+#find_library(CMSIS 
+    #NAMES CMSIS
+    #HINTS ${CMSIS_PATH}
+    #NO_DEFAULT_PATH
+    #REQUIRED)
 target_link_libraries(STM32F7xx_HAL_Driver CMSIS)
