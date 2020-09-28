@@ -63,10 +63,21 @@ target_include_directories(${TARGET_OUTPUT} PUBLIC
     ${APP_INC_PATH} # app includes
     )
 
+
 add_subdirectory(Middlewares)
-target_link_libraries(${TARGET_OUTPUT} Middlewares)
+target_link_libraries(${TARGET_OUTPUT} PUBLIC Middlewares)
 add_subdirectory(Drivers)
-target_link_libraries(${TARGET_OUTPUT} Drivers)
+target_link_libraries(${TARGET_OUTPUT} PUBLIC Drivers)
+if(FATFS)
+    add_subdirectory(FATFS)
+    target_link_libraries(FATFS_APP PUBLIC FATFS_MIDDLEWARE)
+    target_link_libraries(FATFS_APP PUBLIC FATFS_TARGET)
+    target_link_libraries(FATFS_TARGET PUBLIC STM32F7xx_HAL_Driver)
+    target_link_libraries(FATFS_TARGET PUBLIC FATFS_MIDDLEWARE)
+    target_link_libraries(${TARGET_OUTPUT} PUBLIC FATFS_APP)
+    set(FFCONF_PATH ${PROJECT_SOURCE_DIR}/FATFS/Target CACHE STRING "ffconf.h path")
+endif(FATFS)
+
 
 ##############################################################################
 include(binutils-arm-none-aebi)

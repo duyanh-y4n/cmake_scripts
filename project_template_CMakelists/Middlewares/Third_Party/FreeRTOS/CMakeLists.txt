@@ -1,7 +1,7 @@
 project(FreeRTOS)
 cmake_minimum_required(VERSION 3.15.3)
 
-#include(LOGGER)
+include(LOGGER)
 
 # FreeRTOS env include path
 set(FREERTOS_INC ${CMAKE_CURRENT_SOURCE_DIR}/Source/include CACHE INTERNAL "")
@@ -21,10 +21,10 @@ if(MCU STREQUAL STM32L496xx) #TODO: use MCU var instead
 elseif(MCU STREQUAL STM32F769xx)
     set(FREERTOS_GCC ${CMAKE_CURRENT_SOURCE_DIR}/Source/portable/GCC/ARM_CM7/r0p1 CACHE INTERNAL "")
 else()
-    message(LOG_ERR "MCU not supported")
+    LOGGER(LOG_ERR "MCU not supported")
 endif()
 
-message("Building ${FREERTOS_CMSIS_OS}")
+LOGGER(LOG_INFO "Building ${FREERTOS_CMSIS_OS}")
 add_library(freertos
     # CMSIS_RTOS
     ${FREERTOS_CMSIS_OS}/cmsis_os.c
@@ -51,7 +51,7 @@ add_library(freertos
     )
 
 if(NOT DEFINED FREERTOS_CONFIG_PATH)
-    message(FATAL_ERROR "FREERTOS_CONFIG_PATH not set!")
+    LOGGER(LOG_ERR "FREERTOS_CONFIG_PATH not set!")
 endif(NOT DEFINED FREERTOS_CONFIG_PATH)
 
 target_include_directories(freertos PUBLIC
@@ -61,20 +61,20 @@ target_include_directories(freertos PUBLIC
     ${FREERTOS_CONFIG_PATH} # FreeRTOSConfig.h location
     )
 
-target_link_libraries(freertos CMSIS) # add CMSIS_RTOS interface (for cmsis_gcc.h)
+target_link_libraries(freertos PUBLIC CMSIS) # add CMSIS_RTOS interface (for cmsis_gcc.h)
 #target_link_libraries(freertos APP_FREERTOS_CONFIG) # FreeRTOSConfig.h location
 
 if(SEGGER_SYSVIEW STREQUAL TRUE)
     if(FREERTOSV10 STREQUAL TRUE) # SEGGER System View
-        message(LOG_INFO "FreeRTOS: linking SEGGER_SYSVIEW")
+        LOGGER(LOG_INFO "FreeRTOS: linking SEGGER_SYSVIEW")
         target_include_directories(freertos PUBLIC
             ${SEGGER_SAMPLE}/FreeRTOSV10
             ${SEGGER_SRC}
             ${SEGGER_CONF}
             )
     else()
-        message(LOG_ERR "FreeRTOS: this version not supported Sysview")
+        LOGGER(LOG_ERR "FreeRTOS: this version not supported Sysview")
     endif(FREERTOSV10 STREQUAL TRUE)
 else()
-    message(LOG_WARN "FreeRTOS: skipping SEGGER_SYSVIEW include directories")
+    LOGGER(LOG_WARN "FreeRTOS: skipping SEGGER_SYSVIEW include directories")
 endif(SEGGER_SYSVIEW STREQUAL TRUE)

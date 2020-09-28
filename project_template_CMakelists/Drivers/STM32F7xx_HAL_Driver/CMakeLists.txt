@@ -215,4 +215,4 @@ target_include_directories(STM32F7xx_HAL_Driver PUBLIC
     #HINTS ${CMSIS_PATH}
     #NO_DEFAULT_PATH
     #REQUIRED)
-target_link_libraries(STM32F7xx_HAL_Driver CMSIS)
+target_link_libraries(STM32F7xx_HAL_Driver PUBLIC CMSIS)

@@ -36,24 +36,6 @@ elseif(MCU STREQUAL STM32F769xx)
 else()
     message("------------- ERROR-----------------")
 endif()
-#target_link_libraries(CMSIS INTERFACE CMSIS_Device)
-
-## RTOS
-#add_library(CMSIS_RTOS INTERFACE)
-#option(RTOS "CMSIS RTOS" ON)
-#option(RTOS2 "CMSIS RTOS2" OFF)
-#if(RTOS)
-    #target_include_directories(CMSIS_RTOS INTERFACE
-        #${CMSIS_PATH}/RTOS
-        #)
-    #target_link_libraries(CMSIS INTERFACE CMSIS_RTOS)
-#endif(RTOS)
-#if(RTOS2)
-    #target_include_directories(CMSIS_RTOS INTERFACE
-        #${CMSIS_PATH}/RTOS2
-        #)
-    #target_link_libraries(CMSIS INTERFACE CMSIS_RTOS)
-#endif(RTOS2)
 
 ## TODO add other module (DSP,math,...)
 
